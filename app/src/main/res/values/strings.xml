@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name">Battery Guard</string>
+    <string name="service_description">Melindungi baterai dengan memantau level energi dan memberikan peringatan kritis.</string>
+</resources>
