@@ -4,10 +4,10 @@ buildscript {
         mavenCentral()
     }
     dependencies {
-        // Plugin Android Gradle (AGP) 8.2.2 cocok untuk SDK 34
         classpath 'com.android.tools.build:gradle:8.2.2'
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:1.9.22"
     }
 }
 
-// HAPUS bagian allprojects { ... } yang ada di bawah sini sebelumnya
+// JANGAN tambahkan apapun di bawah sini. 
+// Semua repo sudah dihandle oleh settings.gradle
