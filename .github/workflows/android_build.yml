@@ -1,0 +1,46 @@
+name: Android Build & Deploy
+
+on:
+  push:
+    branches: [ "main", "master" ] # Berjalan saat Anda push ke branch utama
+  workflow_dispatch: # Memungkinkan menjalankan manual dari tab Actions
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout Repository
+      uses: actions/checkout@v4
+
+    - name: Set up JDK 17
+      uses: actions/setup-java@v4
+      with:
+        java-version: '17'
+        distribution: 'temurin'
+        cache: gradle
+
+    - name: Grant execute permission for gradlew
+      run: chmod +x gradlew
+
+    - name: Build Release APK
+      run: ./gradlew assembleDebug
+
+    # Bagian ini opsional jika Anda ingin APK yang sudah ditandatangani secara resmi.
+    # Jika hanya untuk testing di LineageOS, APK debug/unsigned biasanya cukup 
+    # selama "Unknown Sources" diaktifkan.
+    
+    - name: Upload APK to Artifacts
+      uses: actions/upload-artifact@v4
+      with:
+        name: BatteryGuard-APK
+        path: app/build/outputs/apk/release/*.apk
+
+    - name: Create Release
+      id: create_release
+      uses: softprops/action-gh-release@v2
+      if: startsWith(github.ref, 'refs/tags/') # Hanya deploy jika ada tag (v1.0.0, dll)
+      with:
+        files: app/build/outputs/apk/release/*.apk
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
